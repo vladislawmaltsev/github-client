@@ -30,6 +30,7 @@ const GET_REPOSITORIES_OF_CURRENT_USER = gql`
   ${REPOSITORY_FRAGMENT}
 `;
 
+
 const Profile = () => (
   <Query
     query={GET_REPOSITORIES_OF_CURRENT_USER}

@@ -10,8 +10,9 @@ import * as routes from '../constants/routes';
 
 import './style.css';
 
-const CLIENT_ID = "a41eb2893d39b444824a";
-const REDIRECT_URI = "http://localhost:3000/profile";
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+const AUTH_API_URI = process.env.REACT_APP_AUTH_API_URI;
 
 class App extends Component {
     state = {
@@ -19,14 +20,39 @@ class App extends Component {
         token: null
     };
 
+    // componentDidMount() {
+    //     const code =
+    //         window.location.href.match(/\?code=(.*)/) &&
+    //         window.location.href.match(/\?code=(.*)/)[1];
+    //     if (code) {
+    //         fetch(`https://github-react-client.herokuapp.com/authenticate/${code}`)
+    //             .then(response => response.json())
+    //             .then(({ token }) => {
+    //                 this.setState({
+    //                     token: token,
+    //                 });
+    //                 localStorage.setItem('token',token);
+    //             });
+    //     }
+    // }
+
     componentDidMount() {
+        const storedToken = localStorage.getItem("github_token");
+        if (storedToken) {
+            this.setState({
+                token: storedToken,
+            });
+            return;
+        }
         const code =
             window.location.href.match(/\?code=(.*)/) &&
             window.location.href.match(/\?code=(.*)/)[1];
         if (code) {
-            fetch(`https://github-react-client.herokuapp.com/authenticate/${code}`)
+            // this.setState({ status: STATUS.LOADING });
+            fetch(`${AUTH_API_URI}${code}`)
                 .then(response => response.json())
                 .then(({ token }) => {
+                    localStorage.setItem("github_token", token);
                     this.setState({
                         token,
                     });

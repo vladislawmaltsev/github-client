@@ -14,14 +14,16 @@ import './style.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 const GITHUB_BASE_URL = 'https://api.github.com/graphql';
+//const GITHUB_BASE_URL = 'https://github-react-client.herokuapp.com/';
 
 const httpLink = new HttpLink({
   uri: GITHUB_BASE_URL,
-  headers: {
-    authorization: `Bearer ${
-      process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN
-    }`,
-  },
+  // headers: {
+  //   authorization: `Bearer ${
+  //     process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN
+  //     //localStorage.getItem('token')
+  //   }`,
+  // },
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
