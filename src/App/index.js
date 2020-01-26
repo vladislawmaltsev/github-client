@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+import Avatar from "../Components/Avatar/Avatar";
 
 import {
   STATUS,
   Loading,
-  Avatar,
   Logo,
   Logotype,
   Container,
@@ -13,6 +15,22 @@ import {
 const CLIENT_ID = "df76084ebaa9a735ff88";
 //const REDIRECT_URI = "localhost:3000";
 const REDIRECT_URI = "https://dridll-github-client.herokuapp.com/authenticate";
+
+const client = new ApolloClient({
+    uri: "https://api.github.com/graphql",
+    request: operation => {
+      const token = localStorage.getItem("github_token");
+      if (token) {
+        operation.setContext({
+          headers: {
+            authorization: `Bearer ${token}`
+          }
+        });
+      }
+    }
+  });
+
+
 class App extends Component {
     state = {
       status: STATUS.INITIAL,
@@ -35,39 +53,42 @@ class App extends Component {
     }
     render() {
       return (
-        <Container>
-          <Header>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Logo />
-              <Logotype />
-            </div>
-            <Avatar
-              style={{
-                transform: `scale(${
-                  this.state.status === STATUS.AUTHENTICATED ? "1" : "0"
-                })`
-              }}
-            />
-            <a
-              style={{
-                display: this.state.status === STATUS.INITIAL ? "inline" : "none"
-              }}
-              href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
-            >
-              Login
-            </a>
-          </Header>
-          <Loading
-            status={this.state.status}
-            callback={() => {
-              if (this.props.status !== STATUS.AUTHENTICATED) {
-                this.setState({
-                  status: STATUS.AUTHENTICATED
-                });
-              }
-            }}
-          />
-        </Container>
+        <ApolloProvider client={client}>
+            <Container>
+                <Header>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        <Logo />
+                        <Logotype />
+                    </div>
+                    <Avatar
+                        style={{
+                            transform: `scale(${
+                            this.state.status === STATUS.AUTHENTICATED ? "1" : "0"
+                            })`
+                        }}
+                    />
+                    <a
+                        style={{
+                            display: this.state.status === STATUS.INITIAL ? "inline" : "none"
+                        }}
+                        href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
+                    >
+                    Login
+                        </a>
+                </Header>
+                <Loading
+                    status={this.state.status}
+                    callback={() => {
+                    if (this.props.status !== STATUS.AUTHENTICATED) {
+                        this.setState({
+                        status: STATUS.AUTHENTICATED
+                        });
+                    }
+                    }}
+                />
+            </Container>
+        </ApolloProvider>
+        
       );
     }
   }
