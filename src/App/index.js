@@ -1,112 +1,75 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import React, { Component } from "react";
 
-import Navigation from '../Components/Navigation/Navigation';
-import Footer from '../Components/Footer/Footer';
-import Profile from '../Components/Profile/Profile';
-import Organization from '../Components/Organization/Organization';
+import {
+  STATUS,
+  Loading,
+  Avatar,
+  Logo,
+  Logotype,
+  Container,
+  Header
+} from "gitstar-components";
 
-import * as routes from '../constants/routes';
-
-import './style.css';
-
-const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
-const AUTH_API_URI = process.env.REACT_APP_AUTH_API_URI;
-
+const CLIENT_ID = "df76084ebaa9a735ff88";
+//const REDIRECT_URI = "localhost:3000";
+const REDIRECT_URI = "https://dridll-github-client.herokuapp.com/authenticate";
 class App extends Component {
     state = {
-        organizationName: 'facebook',
-        token: null
+      status: STATUS.INITIAL,
+      token: null
     };
-
-    // componentDidMount() {
-    //     const code =
-    //         window.location.href.match(/\?code=(.*)/) &&
-    //         window.location.href.match(/\?code=(.*)/)[1];
-    //     if (code) {
-    //         fetch(`https://github-react-client.herokuapp.com/authenticate/${code}`)
-    //             .then(response => response.json())
-    //             .then(({ token }) => {
-    //                 this.setState({
-    //                     token: token,
-    //                 });
-    //                 localStorage.setItem('token',token);
-    //             });
-    //     }
-    // }
-
     componentDidMount() {
-        const storedToken = localStorage.getItem("github_token");
-        if (storedToken) {
+      const code =
+        window.location.href.match(/\?code=(.*)/) && window.location.href.match(/\?code=(.*)/)[1];
+      if (code) {
+        this.setState({ status: STATUS.LOADING });
+        fetch(`https://dridll-github-client.herokuapp.com/authenticate/${code}`)
+          .then(response => response.json())
+          .then(({ token }) => {
             this.setState({
-                token: storedToken,
+              token,
+              status: STATUS.FINISHED_LOADING
             });
-            return;
-        }
-        const code =
-            window.location.href.match(/\?code=(.*)/) &&
-            window.location.href.match(/\?code=(.*)/)[1];
-        if (code) {
-            // this.setState({ status: STATUS.LOADING });
-            fetch(`${AUTH_API_URI}${code}`)
-                .then(response => response.json())
-                .then(({ token }) => {
-                    localStorage.setItem("github_token", token);
-                    this.setState({
-                        token,
-                    });
-                });
-        }
+          });
+      }
     }
-
-    onOrganizationSearch = value => {
-        this.setState({ organizationName: value });
-    };
-
     render() {
-        const { organizationName } = this.state;
-        return (
-            <Router>
-
-                <div className="App">
-                    <Navigation
-                        organizationName={organizationName}
-                        onOrganizationSearch={this.onOrganizationSearch}
-                    />
-
-                    <div className="App-main">
-                        <Route
-                            exact
-                            path={routes.ORGANIZATION}
-                            component={() => (
-                                <div className="App-content_large-header">
-                                    <Organization organizationName={organizationName} />
-                                </div>
-                            )}
-                        />
-                        <Route
-                            exact
-                            path={routes.PROFILE}
-                            component={() => (
-                                <div className="App-content_small-header">
-                                    <Profile />
-                                </div>
-                            )}
-                        />
-                    </div>
-                    <div>
-                        <a
-                            href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
-                        >
-                            Login
-                        </a>
-                    </div>
-                    <Footer />
-                </div>
-            </Router>
-        );
+      return (
+        <Container>
+          <Header>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Logo />
+              <Logotype />
+            </div>
+            <Avatar
+              style={{
+                transform: `scale(${
+                  this.state.status === STATUS.AUTHENTICATED ? "1" : "0"
+                })`
+              }}
+            />
+            <a
+              style={{
+                display: this.state.status === STATUS.INITIAL ? "inline" : "none"
+              }}
+              href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
+            >
+              Login
+            </a>
+          </Header>
+          <Loading
+            status={this.state.status}
+            callback={() => {
+              if (this.props.status !== STATUS.AUTHENTICATED) {
+                this.setState({
+                  status: STATUS.AUTHENTICATED
+                });
+              }
+            }}
+          />
+        </Container>
+      );
     }
-}
-
-export default App;
+  }
+  
+  export default App;
