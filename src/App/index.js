@@ -13,7 +13,7 @@ import {
 } from "gitstar-components";
 
 const CLIENT_ID = "df76084ebaa9a735ff88";
-const REDIRECT_URI = "localhost:3000";
+const REDIRECT_URI = "localhost:3000/profile";
 //const REDIRECT_URI = "https://dridll-github-client.herokuapp.com/authenticate";
 
 const client = new ApolloClient({
