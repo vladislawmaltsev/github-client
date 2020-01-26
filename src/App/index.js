@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import Avatar from "../Components/Avatar/Avatar";
-
+import Repositories from "../Components/Repository/Repositories"
 import {
   STATUS,
   Loading,
@@ -13,8 +13,8 @@ import {
 } from "gitstar-components";
 
 const CLIENT_ID = "df76084ebaa9a735ff88";
-//const REDIRECT_URI = "localhost:3000";
-const REDIRECT_URI = "https://dridll-github-client.herokuapp.com/authenticate";
+const REDIRECT_URI = "localhost:3000";
+//const REDIRECT_URI = "https://dridll-github-client.herokuapp.com/authenticate";
 
 const client = new ApolloClient({
     uri: "https://api.github.com/graphql",
@@ -34,22 +34,30 @@ const client = new ApolloClient({
 class App extends Component {
     state = {
       status: STATUS.INITIAL,
-      token: null
     };
     componentDidMount() {
-      const code =
-        window.location.href.match(/\?code=(.*)/) && window.location.href.match(/\?code=(.*)/)[1];
-      if (code) {
-        this.setState({ status: STATUS.LOADING });
-        fetch(`https://dridll-github-client.herokuapp.com/authenticate/${code}`)
-          .then(response => response.json())
-          .then(({ token }) => {
+        const storedToken = localStorage.getItem("github_token");
+        if (storedToken) {
             this.setState({
-              token,
-              status: STATUS.FINISHED_LOADING
+            status: STATUS.AUTHENTICATED
             });
-          });
-      }
+            return;
+        }
+        const code = window.location.href.match(/\?code=(.*)/) && window.location.href.match(/\?code=(.*)/)[1];
+        if (code) {
+            this.setState({ status: STATUS.LOADING });
+            fetch(`https://dridll-github-client.herokuapp.com/authenticate/${code}`)
+            .then(response => response.json())
+            .then(({ token }) => {
+                if (token) {
+                    localStorage.setItem("github_token", token);
+                }
+                this.setState({
+                //token,
+                status: STATUS.FINISHED_LOADING
+                });
+            });
+         }  
     }
     render() {
       return (
@@ -69,12 +77,13 @@ class App extends Component {
                     />
                     <a
                         style={{
-                            display: this.state.status === STATUS.INITIAL ? "inline" : "none"
+                            display:
+                            this.state.status === STATUS.INITIAL ? "inline" : "none"
                         }}
-                        href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
+                        href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user%20public_repo%20gist&redirect_uri=${REDIRECT_URI}`}
                     >
-                    Login
-                        </a>
+                        Login
+                    </a>
                 </Header>
                 <Loading
                     status={this.state.status}
@@ -86,6 +95,7 @@ class App extends Component {
                     }
                     }}
                 />
+                {this.state.status === STATUS.AUTHENTICATED && <Repositories />}
             </Container>
         </ApolloProvider>
         
