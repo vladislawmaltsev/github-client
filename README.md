@@ -1,6 +1,6 @@
 ## [Simple GitHub Client](https://fathomless-bayou-38075.herokuapp.com/login)
 
-GitHub client Lite with folowing features:
+GitHub client with folowing features:
 
 + OAuth authorization
 + view your profile with a repository list
