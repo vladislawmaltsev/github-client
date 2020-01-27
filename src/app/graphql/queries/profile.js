@@ -11,7 +11,7 @@ query UserProfile($login:String!){
     email
     login
     name
-    repositories(first: 10) {
+    repositories(first: 15) {
       edges {
         node {
           id

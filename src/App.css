@@ -20,3 +20,12 @@
 .App-link {
   color: #09d3ac;
 }
+
+.button-theme {
+   color: darkseagreen;
+}
+
+.button-theme:hover {
+  border-color: darkcyan;
+  color: darkslategrey;
+}

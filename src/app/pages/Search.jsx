@@ -6,6 +6,7 @@ import RepositorySearch from "../components/search/RepositorySearch";
 const {Option} = Select;
 
 
+
 function Search() {
     let [searchType, setSearchType] = useState('repository');
     let [searchTerm, setSearchTerm] = useState('');
@@ -28,7 +29,6 @@ function Search() {
 
     return (
         <div>
-            <h1>SEARCH</h1>
             <div className="search-container">
                 <Input className="search-input" value={searchTerm}
                        onChange={(event) => setSearchTerm(event.target.value)} placeholder={searchType}/>

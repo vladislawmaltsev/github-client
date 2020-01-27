@@ -3,6 +3,7 @@ import React from "react";
 import {Query} from 'react-apollo';
 import gql from "graphql-tag";
 import {Icon, Spin} from "antd";
+import '../../pages/styles.scss'
 
 const GET_REPOSITORIES_OF_ORGANIZATION = gql`
 query Reps($query: String!) {
@@ -36,7 +37,7 @@ const RepositorySearch = ({query}) => (
                         data ?
                             <Repositories repositories={data.search}/> :
                             (query.length !== 0 &&
-                                <Icon type="frown" className="search-spin" style={{fontSize: '40px'}} theme="twoTone"/>
+                                <Icon type="stop" className="search-spin" style={{fontSize: '40px'}} theme="twoTone"/>
                             )
                 );
             }

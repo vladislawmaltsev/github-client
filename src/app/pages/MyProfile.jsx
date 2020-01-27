@@ -3,6 +3,7 @@ import {Query} from 'react-apollo';
 import {Col, Row, Spin} from "antd";
 import FullProfile from "../components/profile/FullProfile";
 import {MY_PROFILE_QUERY} from "../graphql/queries/profile";
+import "./styles.scss"
 
 function MyProfile() {
     return (

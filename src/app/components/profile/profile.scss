@@ -5,6 +5,7 @@
 
 .repositories {
   margin-top: 20px;
+  max-width: 50%;
 }
 
 .repository-name {
@@ -14,4 +15,11 @@
 
 .follow-button {
   margin: 10px;
+  background-color: darkseagreen;
+  border-color: gainsboro;
+}
+.follow-button:hover {
+  margin: 10px;
+  background-color: darkseagreen;
+  border-color: gainsboro;
 }

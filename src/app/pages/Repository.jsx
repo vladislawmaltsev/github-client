@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import {Col, Row, Spin} from "antd";
 import {Query} from 'react-apollo';
 import FullRepository from "../components/repositories/FullRepository";
+import "./styles.scss"
 
 const GET_REPOSITORY = gql`
 query Repos($login: String!, $name: String!) {

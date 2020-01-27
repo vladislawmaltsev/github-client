@@ -8,7 +8,7 @@ import {STAR_REPOSITORY, REMOVE_STAR} from "../../graphql/mutations/stars";
 const Star = ({id, hasStarred, stars, setStars}) => (
     <Mutation mutation={hasStarred ? REMOVE_STAR : STAR_REPOSITORY} variables={{id}}>
         {starRepository => (
-            <Icon type="star" className="star-icon" onClick={event => {
+            <Icon theme="twoTone" type="star" className="star-icon" onClick={event => {
                 event.preventDefault();
                 if (setStars) {
                     setStars(hasStarred ? --stars : ++stars);

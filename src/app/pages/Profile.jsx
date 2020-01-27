@@ -4,6 +4,7 @@ import FullProfile from "../components/profile/FullProfile";
 import {useParams} from "react-router-dom";
 import {Col, Row, Spin} from "antd";
 import {PROFILE_QUERY} from "../graphql/queries/profile";
+import "./styles.scss"
 
 function Profile() {
     let {login} = useParams();

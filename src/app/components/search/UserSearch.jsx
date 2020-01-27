@@ -1,7 +1,6 @@
 import React from "react";
 import gql from "graphql-tag";
 import {Query} from 'react-apollo';
-import './search.scss';
 import {Avatar, Card, Icon, Spin} from "antd";
 import {Link} from "react-router-dom";
 
@@ -36,7 +35,7 @@ const UserSearchResult = ({login}) => (
                                 </Card>
                             </Link> :
                             (login.length !== 0 &&
-                                <Icon type="frown" className="search-spin" style={{fontSize: '40px'}} theme="twoTone"/>
+                                <Icon type="stop" className="search-spin" style={{fontSize: '40px'}} theme="twoTone"/>
                             )
                 );
             }

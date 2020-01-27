@@ -2,7 +2,7 @@ import React from 'react';
 import '../App.css';
 import 'antd/dist/antd.css';
 import {Button, PageHeader} from "antd";
-import github from "./static/images/github.png";
+import Octocat from "./static/images/Octocat.png";
 import {useHistory} from "react-router-dom";
 
 function App({children}) {
@@ -15,14 +15,16 @@ function App({children}) {
                     border: '1px solid rgb(235, 237, 240)',
                 }}
                 title={
-                    <img height="40px" src={github} alt="logo"/>
+                    <img height="40px" src={Octocat} alt="logo"/>
                 }
-                subTitle="simple client"
                 extra={[
-                    <Button key="3" onClick={() => history.push('/search')} shape="square" icon="search"/>,
-                    <Button key="2" onClick={() => history.push('/my-profile')} shape="square" icon="user">My
-                        profile</Button>,
-                    <Button onClick={logOut} key="1" shape="square" type="primary" icon="logout">
+                    <Button className="button-theme" key="3" onClick={() => history.push('/search')} shape="square" icon="search"> 
+                        Search
+                    </Button>,
+                    <Button  className="button-theme" key="2" onClick={() => history.push('/my-profile')} shape="square" icon="user">
+                        Profile
+                    </Button>,
+                    <Button className="logout-button" onClick={logOut} key="1" shape="square" type="primary" icon="logout">
                         Logout
                     </Button>,
                 ]}
