@@ -1,56 +1,58 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import './index.css';
+import App from './app/App';
 import * as serviceWorker from './serviceWorker';
-import App from './App';
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import {ApolloProvider} from 'react-apollo';
+import {ApolloClient} from 'apollo-client';
+import {InMemoryCache} from 'apollo-cache-inmemory';
+import Login from "./app/pages/Login";
+import Search from "./app/pages/Search";
+import Profile from "./app/pages/Profile";
+import Repository from "./app/pages/Repository";
+import MyProfile from "./app/pages/MyProfile";
+import { HttpLink } from 'apollo-link-http';
+import {createHttpLink} from 'apollo-link-http';
+import {setContext} from "apollo-link-context";
 
-import './style.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+const httpLink = createHttpLink({
+    uri: 'https://api.github.com/graphql'
+});
 
-// const GITHUB_BASE_URL = 'https://api.github.com/graphql';
-// //const GITHUB_BASE_URL = 'https://github-react-client.herokuapp.com/';
+const authLink = setContext((_, { headers }) => {
+    const token = localStorage.getItem('token');
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : ''
+        }
+    }
+});
 
-// const httpLink = new HttpLink({
-//   uri: GITHUB_BASE_URL,
-//   // headers: {
-//   //   authorization: `Bearer ${
-//   //     process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN
-//   //     //localStorage.getItem('token')
-//   //   }`,
-//   // },
-// });
+const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    //link: httpLink,
+    cache: new InMemoryCache()
+});
 
-// const errorLink = onError(({ graphQLErrors, networkError }) => {
-//   if (graphQLErrors) {
-//     graphQLErrors.map(({ message, locations, path }) =>
-//       console.log(
-//         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-//       ),
-//     );
-//   }
+ReactDOM.render((
+    <ApolloProvider client={client}>
+        <BrowserRouter>
+            
+            <App>
+                <Switch>
+                    <Route exact path='/login' component={Login}/>
+                    <Route path='/repository/:login/:name' component={Repository} />
+                    <Route path='/profile/:login' component={Profile} />
+                    <Route path='/my-profile' component={MyProfile} />
+                    <Route path='/search' component={Search} />
+                </Switch>
+            </App>
+        </BrowserRouter>
+    </ApolloProvider>
+), document.getElementById('root'));
 
-//   if (networkError) {
-//     console.log(`[Network error]: ${networkError}`);
-//   }
-// });
-
-// const link = ApolloLink.from([errorLink, httpLink]);
-
-// const cache = new InMemoryCache();
-
-// const client = new ApolloClient({
-//   link,
-//   cache,
-// });
-
-ReactDOM.render(
-  //<ApolloProvider client={client}>
-    <App />,
-  //</ApolloProvider>,
-  document.getElementById('root'),
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+export default client;
