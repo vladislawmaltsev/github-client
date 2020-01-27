@@ -16,7 +16,7 @@ function Search() {
         const code = window.location.href.match(/\?code=(.*)/) && window.location.href.match(/\?code=(.*)/)[1];
         console.log(code);
         if (code) {
-            fetch(`http://localhost:9999/authenticate/${code}`)
+            fetch(`https://localhost:9999/authenticate/${code}`)
                 .then(response => response.json())
                 .then(({ token }) => {
                     if (token) {

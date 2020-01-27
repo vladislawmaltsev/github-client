@@ -6,7 +6,7 @@ import "./styles.scss";
 function Login() {
 
     const CLIENT_ID = "df76084ebaa9a735ff88";
-    const REDIRECT_URI = "http://localhost:3000/search";
+    const REDIRECT_URI = "https://fathomless-bayou-38075.herokuapp.com/search";
 
     return (
         <div>
