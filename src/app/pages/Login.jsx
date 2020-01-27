@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {Button, Col, Icon, Input, Row} from "antd";
+import React from "react";
+import {Button, Col, Row} from "antd";
 import Octocat from "../static/images/Octocat.png";
 import "./styles.scss";
 

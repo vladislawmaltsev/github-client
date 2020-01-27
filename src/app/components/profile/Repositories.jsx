@@ -1,6 +1,6 @@
 import React from "react";
 import './profile.scss';
-import {Card, Icon} from "antd";
+import {Card} from "antd";
 import {Link} from "react-router-dom";
 import Star from "../repositories/Star";
 

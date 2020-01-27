@@ -27,7 +27,7 @@ function FullProfile(props) {
             </Row>
             <Row type="flex" justify="center">
                 <Col align="center" span={20}>
-                    <h2>Repositories</h2>
+                    <h2>Repository List</h2>
                     <Repositories repositories={data.repositories} />
                 </Col>
             </Row>
