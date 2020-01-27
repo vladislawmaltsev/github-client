@@ -11,4 +11,5 @@ function ShortUserInfo({user}) {
     )
 }
 
+
 export default ShortUserInfo;
