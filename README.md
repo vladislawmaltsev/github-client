@@ -1,7 +1,11 @@
-1. Git clone
+##[Simple GitHub Client](https://fathomless-bayou-38075.herokuapp.com/login)
 
-2. `npm install`
+For local deployment:
 
-3. Create .env and insert your GitHub Token
+###1. `$ git clone https://github.com/vladislawmaltsev/github-client.git`
 
-4. `npm start`
+###2. `$ npm install`
+
+###3. `$ npm start`
+
+###4. Enjoy :)
